@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkHub - 초고속 스마트 URL 단축기</title>
+  <meta name="description" content="긴 링크를 단 한 번의 클릭으로 짧고 깔끔한 단축 URL로 변환하세요.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Background Glow & Animated Ambient Effects -->
+  <div class="bg-effects">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <!-- Header Section with Dual Navigation -->
+  <header class="app-header">
+    <div class="logo-container" id="logoContainer" title="새로고침 / 홈">
+      <div class="logo-icon-box">
+        <i class="fa-solid fa-bolt-lightning"></i>
+      </div>
+      <div class="logo-text">
+        <span class="brand-title">LinkHub</span>
+        <span class="brand-badge">PRO</span>
+      </div>
+    </div>
+    
+    <!-- Top Navigation Buttons -->
+    <nav class="nav-switcher">
+      <a href="../url2qr/index.html" class="nav-tab-btn" id="navQrBtn" title="QR 코드 생성기로 이동">
+        <i class="fa-solid fa-qrcode"></i>
+        <span>QR코드</span>
+      </a>
+      <a href="../urlShort/index.html" class="nav-tab-btn active" id="navShortBtn" title="URL 단축 서비스">
+        <i class="fa-solid fa-link"></i>
+        <span>URL단축</span>
+      </a>
+    </nav>
+
+    <div class="header-actions">
+      <div class="theme-pill">
+        <i class="fa-solid fa-shield-halved"></i>
+        <span>Safe & Fast API</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Area -->
+  <main class="main-wrapper" id="mainWrapper">
+    
+    <!-- Hero / Intro Section -->
+    <section class="hero-section" id="heroSection">
+      <div class="hero-badge">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> OpenAPI 기반 실시간 URL 단축 서비스
+      </div>
+      <h1 class="hero-title">
+        복잡하고 긴 링크를 <span class="gradient-text">깔끔한 단축 URL</span>로
+      </h1>
+      <p class="hero-subtitle">
+        URL을 입력하고 단축하기를 누르면 강력한 글로벌 단축 API로 즉시 최적화된 짧은 주소를 발급합니다.
+      </p>
+    </section>
+
+    <!-- URL Shortening Core Card -->
+    <section class="shortener-card-container">
+      <div class="glass-card main-card" id="shortenerCard">
+        <div class="card-shine"></div>
+
+        <!-- Input Form Area -->
+        <form id="shortenForm" class="shorten-form" onsubmit="return false;">
+          <label for="urlInput" class="input-label">
+            <i class="fa-solid fa-link"></i> 단축할 원본 URL 입력
+          </label>
+          
+          <div class="input-glow-border" id="inputBorder">
+            <div class="input-inner-wrapper">
+              <div class="input-icon">
+                <i class="fa-solid fa-globe"></i>
+              </div>
+              <input 
+                type="url" 
+                id="urlInput" 
+                class="url-input" 
+                placeholder="https://example.com/very-long-url-path..." 
+                autocomplete="off" 
+                spellcheck="false"
+              >
+              <button type="button" class="clear-btn" id="clearBtn" title="입력 내용 지우기">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Test Samples -->
+          <div class="quick-samples">
+            <span class="sample-label"><i class="fa-solid fa-flask"></i> 빠른 샘플:</span>
+            <button type="button" class="sample-chip" data-url="https://www.google.com/search?q=vibecoding+smart+tools+future">Google 검색</button>
+            <button type="button" class="sample-chip" data-url="https://github.com/features/actions">GitHub Actions</button>
+            <button type="button" class="sample-chip" data-url="https://news.naver.com/main/main.naver?mode=LSD&mid=shm&sid1=105">네이버 IT뉴스</button>
+          </div>
+
+          <!-- Submit Button (Disabled by default when input is empty) -->
+          <div class="action-row">
+            <button type="submit" class="shorten-btn" id="shortenBtn" disabled>
+              <span class="btn-spinner" id="btnSpinner"><i class="fa-solid fa-circle-notch fa-spin"></i></span>
+              <span class="btn-text" id="btnText"><i class="fa-solid fa-bolt"></i> 단축하기</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Result Section (Shown when shortened URL is available) -->
+        <div class="result-section" id="resultSection">
+          <div class="result-divider">
+            <span><i class="fa-solid fa-circle-check text-emerald"></i> 단축 완료 결과</span>
+          </div>
+
+          <div class="result-box-wrapper">
+            <label class="result-label" for="shortenedOutput">
+              <span>단축된 URL (읽기 전용)</span>
+              <span class="status-tag" id="statusTag">Ready</span>
+            </label>
+            
+            <div class="result-field-group">
+              <div class="output-icon">
+                <i class="fa-solid fa-share-nodes"></i>
+              </div>
+              <!-- Read-only Output Box -->
+              <input 
+                type="text" 
+                id="shortenedOutput" 
+                class="result-input" 
+                readonly 
+                placeholder="단축된 링크가 여기에 표시됩니다"
+                value=""
+              >
+              
+              <!-- Copy Button -->
+              <button type="button" class="copy-action-btn" id="copyBtn" title="단축 URL 복사">
+                <i class="fa-regular fa-copy" id="copyIcon"></i>
+                <span id="copyBtnText">복사</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Result Extra Quick Actions -->
+          <div class="result-actions">
+            <a href="#" target="_blank" rel="noopener noreferrer" class="link-action-btn" id="openLinkBtn">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              <span>새 창에서 열기</span>
+            </a>
+            <button type="button" class="link-action-btn qr-action" id="makeQrBtn" title="이 단축 URL로 QR코드 만들기">
+              <i class="fa-solid fa-qrcode"></i>
+              <span>QR 코드로 변환</span>
+            </button>
+            <button type="button" class="link-action-btn" id="newShortenBtn">
+              <i class="fa-solid fa-rotate-left"></i>
+              <span>새 링크 단축</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- History / Features Section -->
+    <section class="features-section">
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fa-solid fa-gauge-high"></i></div>
+        <h3>초고속 OpenAPI 연동</h3>
+        <p>글로벌 단축 URL API를 통해 대기 시간 없이 밀리초 단위로 짧은 링크를 생성합니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fa-solid fa-shield-halved"></i></div>
+        <h3>안전하고 신뢰할 수 있는 연결</h3>
+        <p>HTTPS 표준 프로토콜을 준수하여 안전한 리다이렉션을 보장합니다.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i class="fa-solid fa-qrcode"></i></div>
+        <h3>QR코드 생성기와 완벽 호환</h3>
+        <p>단축된 URL을 한 번의 클릭으로 QR코드로 변환하여 오프라인에서도 즉시 공유하세요.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <p>© 2026 LinkHub Studio. All rights reserved. • QR코드 & URL 단축 올인원 서비스</p>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Custom Script -->
+  <script src="script.js"></script>
+</body>
+</html>
